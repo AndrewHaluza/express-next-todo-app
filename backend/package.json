@@ -1,0 +1,40 @@
+{
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-joi-validation": "^6.0.0",
+    "joi": "^17.13.3",
+    "morgan": "^1.10.0",
+    "pg": "^8.14.1",
+    "sequelize": "^6.37.7",
+    "winston": "^3.17.0"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.1",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.0",
+    "@types/supertest": "^6.0.3",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.1.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "db:init": "npx sequelize-cli db:create --config ./src/configs/sequelizeConfig.js",
+    "dev": "tsx watch --env-file=.env src/index.ts",
+    "build": "tsc --project tsconfig.json",
+    "start": "tsx --env-file=.env src/index.ts",
+    "test:db:init": "npx --env-file=.env.testing sequelize-cli db:create --env test --config ./src/configs/sequelizeConfig.js",
+    "test": "tsx --env-file=.env.testing --test --no-experimental-strip-types \"./src/modules/**/*.test.ts\""
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

@@ -1,0 +1,32 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    restart: always
+    ports:
+      - "9091:9091"
+    volumes:
+      - backend_vol:/app/backend
+    env_file:
+      - ./backend/.env
+  frontend:
+    container_name: frontend
+    env_file:
+      - ./frontend/.env
+    build:
+      context: ./frontend
+      args:
+        - APP_API_URL=${APP_API_URL:-http://localhost:9091}
+
+    restart: always
+    environment:
+      - APP_API_URL=${APP_API_URL:-http://localhost:9091}
+      - MODE=production
+    ports:
+      - "3000:3000"
+    volumes:
+      - frontend_vol:/app/frontend
+volumes:
+  backend_vol:
+  frontend_vol:
