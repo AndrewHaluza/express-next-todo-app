@@ -1,6 +1,7 @@
 ## Backend
 
 Add .env
+# Adjust credentials
 
 ```
 cp .env.example .env
@@ -37,5 +38,8 @@ npm run start
 Docker variant
 
 ```
+cp ./frontend/.env.example ./frontend.env
+cp ./backend/.env.example ./backend.env
+
 docker-compose up
 ```
