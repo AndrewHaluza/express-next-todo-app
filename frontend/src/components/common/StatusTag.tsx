@@ -1,4 +1,4 @@
-import { TaskStatus } from "../type/task";
+import { TaskStatus } from "../../type/task";
 
 export function StatusTag(props: { status: TaskStatus; className?: string }) {
   return (

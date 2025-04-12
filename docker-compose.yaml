@@ -1,6 +1,5 @@
 services:
   backend:
-    container_name: backend
     build:
       context: ./backend
     restart: always
@@ -9,16 +8,32 @@ services:
     volumes:
       - backend_vol:/app/backend
     env_file:
-      - ./backend/.env
+      - ./backend/.env.compose
+    networks:
+      - todo-app-network
+    entrypoint: "/bin/bash -c 'npm run db:init && npm run start'"
+
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: ${APP_DB_USER:-admin}
+      POSTGRES_PASSWORD: ${APP_DB_PASSWORD:-admin}
+      POSTGRES_DB: ${APP_DB_DATABASE:-'todo-app'}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - todo-app-network
+
   frontend:
-    container_name: frontend
     env_file:
       - ./frontend/.env
     build:
       context: ./frontend
       args:
         - APP_API_URL=${APP_API_URL:-http://localhost:9091}
-
     restart: always
     environment:
       - APP_API_URL=${APP_API_URL:-http://localhost:9091}
@@ -27,6 +42,14 @@ services:
       - "3000:3000"
     volumes:
       - frontend_vol:/app/frontend
+    networks:
+      - todo-app-network
+
 volumes:
   backend_vol:
   frontend_vol:
+  postgres_data:
+
+networks:
+  todo-app-network:
+    driver: bridge

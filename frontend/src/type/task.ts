@@ -1,3 +1,5 @@
+import { Pagination } from ".";
+
 export type Task = {
   id: number;
   title: string;
@@ -15,6 +17,7 @@ export type TaskStatus =
 
 export type getTasksResponse = {
   data: Task[];
+  meta: { pagination: Pagination };
 };
 
 export type getTaskResponse = {
@@ -35,3 +38,16 @@ export type updateTaskPayload = Pick<
   Task,
   "id" | "title" | "description" | "status"
 >;
+
+export type useCreateTaskMutationResponse = {
+  previousTasks: getTasksResponse;
+};
+
+export type NewTask = Pick<Task, "title" | "description">;
+
+export type UpdateTask = Pick<Task, "id" | "title" | "description" | "status">;
+
+export type UseUpdateTaskMutationResponse = {
+  previousTasks?: getTasksResponse;
+  previousTask?: Task;
+};

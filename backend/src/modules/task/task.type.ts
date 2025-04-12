@@ -1,3 +1,6 @@
+import { CommonResponse, Pagination } from "../../shared/types/global";
+import { TaskModel } from "./task.model";
+
 export type Task = {
   id: number;
   title: string;
@@ -17,3 +20,10 @@ export type TaskStatus =
 export type crateTaskData = Pick<Task, "title" | "description">;
 
 export type updateTaskData = Pick<Task, "title" | "description" | "status">;
+
+export type getTasksResponse = CommonResponse<
+  TaskModel[],
+  {
+    pagination: Pagination;
+  }
+>;

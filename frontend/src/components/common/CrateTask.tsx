@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useCreateTask } from "../hooks/task";
+import { useCreateTask } from "../../hooks/task";
 
 export function CreateTask() {
   const [title, setTitle] = useState<string>("");

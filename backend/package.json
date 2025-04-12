@@ -27,12 +27,12 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "db:init": "npx sequelize-cli db:create --config ./src/configs/sequelizeConfig.js",
+    "db:init": "npx sequelize-cli db:create --config ./src/configs/sequelizeConfig.js || echo 'Database initialization failed, but continuing...'",
     "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc --project tsconfig.json",
     "start": "tsx --env-file=.env src/index.ts",
-    "test:db:init": "npx --env-file=.env.testing sequelize-cli db:create --env test --config ./src/configs/sequelizeConfig.js",
-    "test": "tsx --env-file=.env.testing --test --no-experimental-strip-types \"./src/modules/**/*.test.ts\""
+    "test:db:init": "npx --env-file=.env.testing sequelize-cli db:create --env test --config ./src/configs/sequelizeConfig.js || echo 'Test Database initialization failed, but continuing...'",
+    "test": "tsx --env-file=.env.testing --test \"./src/modules/**/*.test.ts\""
   },
   "author": "",
   "license": "ISC",

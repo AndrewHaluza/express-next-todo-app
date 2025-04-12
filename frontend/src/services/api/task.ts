@@ -10,10 +10,12 @@ import { api } from "./core";
 
 const taskApiUrl = "/api/v1/task";
 
-export const getTasks = async () => {
-  const { data } = await api.get<getTasksResponse>(`${taskApiUrl}`);
+export const getTasks = async (page: number, limit: number) => {
+  const res = await api.get<getTasksResponse>(
+    `${taskApiUrl}?page=${page}&limit=${limit}`
+  );
 
-  return data;
+  return res;
 };
 
 export const getTask = async (id: string) => {

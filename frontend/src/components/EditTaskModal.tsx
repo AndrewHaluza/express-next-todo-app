@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useTaskUpdateModal, useUpdateTask } from "../hooks/task";
+import { useTaskContext, useUpdateTask } from "../hooks/task";
 import { TaskStatus } from "../type/task";
 
 export function EditTaskModal() {
-  const { updateTask, closeModal } = useTaskUpdateModal();
+  const { updateTask, closeModal } = useTaskContext();
   const updateTaskMutation = useUpdateTask();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -22,7 +22,7 @@ export function EditTaskModal() {
     event.preventDefault();
 
     updateTaskMutation.mutate(
-      { id: updateTask.id, title, description, status },
+      { id: updateTask.id, title, description, status, createdAt: updateTask.createdAt, updatedAt: updateTask.updatedAt },
       {
         onSuccess: () => {
           closeModal();

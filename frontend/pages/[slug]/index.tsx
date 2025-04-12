@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 
 import { TaskDetail } from "../../src/components/TaskDetail";
 import DefaultLayout from "../../src/layouts/layout";
-import { TaskModalProvider } from "../../src/contexts/TaskModalContext";
+import { TaskProvider } from "../../src/contexts/TaskContext";
 import { EditTaskModal } from "../../src/components/EditTaskModal";
 
 function TaskDetailPage() {
@@ -16,11 +16,11 @@ function TaskDetailPage() {
   }
 
   return (
-    <TaskModalProvider>
+    <TaskProvider>
       <TaskDetail id={slug as string} />
-      
+
       <EditTaskModal />
-    </TaskModalProvider>
+    </TaskProvider>
   );
 }
 

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useTask } from "../hooks/task";
-import { StatusTag } from "./StatusTag";
+import { StatusTag } from "./common/StatusTag";
 import { TaskDates } from "./TaskDates";
-import { EditTaskButton } from "./EditTaskButton";
-import { DeleteTaskButton } from "./DeleteTaskButton";
+import { EditTaskButton } from "./common/EditTaskButton";
+import { DeleteTaskButton } from "./common/DeleteTaskButton";
 
 export function TaskDetail({ id }: { id: string }) {
   const { data, isLoading, error } = useTask(id);
@@ -25,7 +25,7 @@ export function TaskDetail({ id }: { id: string }) {
         </Link>
 
         <div>
-          <DeleteTaskButton id={data.id} redirect />
+          <DeleteTaskButton id={data.id} page="task-detail" />
 
           <EditTaskButton task={data} />
         </div>

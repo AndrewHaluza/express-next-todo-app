@@ -1,20 +1,20 @@
 import { ReactElement } from "react";
 
-import { CreateTask } from "../src/components/CrateTask";
+import { CreateTask } from "../src/components/common/CrateTask";
 import { EditTaskModal } from "../src/components/EditTaskModal";
 import DefaultLayout from "../src/layouts/layout";
 import { TaskList } from "../src/components/TaskList";
-import { TaskModalProvider } from "../src/contexts/TaskModalContext";
+import { TaskProvider } from "../src/contexts/TaskContext";
 
 function TasksListPage() {
   return (
-    <TaskModalProvider>
+    <TaskProvider>
       <CreateTask />
 
       <TaskList />
 
       <EditTaskModal />
-    </TaskModalProvider>
+    </TaskProvider>
   );
 }
 

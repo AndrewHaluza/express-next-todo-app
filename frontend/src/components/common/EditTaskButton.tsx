@@ -1,8 +1,8 @@
-import { useTaskUpdateModal } from "../hooks/task";
-import { Task } from "../type/task";
+import { useTaskContext } from "../../hooks/task";
+import { Task } from "../../type/task";
 
 export function EditTaskButton({ task }: { task: Task }) {
-  const { openModal } = useTaskUpdateModal();
+  const { openModal } = useTaskContext();
 
   function handleOnEditClick(task: Task) {
     openModal(task);

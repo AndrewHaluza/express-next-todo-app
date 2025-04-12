@@ -4,30 +4,38 @@ import { TaskModel } from "./task.model";
 import {
   createTaskSchema,
   idParamsSchema,
+  paginationQueryParamsSchema,
   updateTaskSchema,
 } from "./task.schema";
 import { TaskService } from "./task.service";
-import { crateTaskData, updateTaskData } from "./task.type";
+import { crateTaskData, getTasksResponse, updateTaskData } from "./task.type";
 
 const taskService = new TaskService();
 
 export class TaskController {
+  @Validate(paginationQueryParamsSchema, "query")
   public static async getTaskList(
     req: global.Request,
-    res: global.Response<global.CommonResponse<TaskModel[]>>
+    res: global.Response<getTasksResponse>
   ) {
-    const data = await taskService.getAllTasks();
+    const page = Number(req.query.page);
+    const limit = Number(req.query.limit);
+    const tasks = await taskService.getAllTasks(page, limit);
 
-    res.send({ data });
+    res.send(tasks);
   }
 
   @Validate(idParamsSchema, "params")
-  public static async getTaskById(req: global.Request<crateTaskData>, res: global.Response) {
+  public static async getTaskById(
+    req: global.Request<crateTaskData>,
+    res: global.Response
+  ) {
     const data = await taskService.getTaskById(req.params.id);
 
     res.send({ data });
   }
 
+  @Validate(idParamsSchema, "params")
   @Validate(updateTaskSchema)
   public static async updateTask(
     req: global.Request<updateTaskData>,
@@ -50,7 +58,7 @@ export class TaskController {
 
   @Validate(idParamsSchema, "params")
   public static async deleteTask(req: global.Request, res: global.Response) {
-    const data = await taskService.deleteTask(req.params.id);
+    await taskService.deleteTask(req.params.id);
 
     res.json({ message: "Task deleted" });
   }
