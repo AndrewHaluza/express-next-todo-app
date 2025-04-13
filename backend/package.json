@@ -21,14 +21,22 @@
     "@types/node": "^22.14.0",
     "@types/supertest": "^6.0.3",
     "nodemon": "^3.1.9",
+    "pre-commit": "^1.2.2",
     "supertest": "^7.1.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "scripts": {
     "db:init": "npx sequelize-cli db:create --config ./src/configs/sequelizeConfig.js || echo 'Database initialization failed, but continuing...'",
     "dev": "tsx watch --env-file=.env src/index.ts",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
     "build": "tsc --project tsconfig.json",
     "start": "tsx --env-file=.env src/index.ts",
     "test:db:init": "npx --env-file=.env.testing sequelize-cli db:create --env test --config ./src/configs/sequelizeConfig.js || echo 'Test Database initialization failed, but continuing...'",
