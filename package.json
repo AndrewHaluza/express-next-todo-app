@@ -7,7 +7,7 @@
     "test:init": "cd backend && npm run test:db:init",
     "test": "cd backend && npm test || echo \"Check node version\"",
     "init:fe": "cd frontend && npm install",
-    "init:be": "cd backend && npm install && npm run db:init && npm run test:db:init",
+    "init:be": "cd backend && npm install",
     "init": "npm run init:fe && npm run init:be",
     "cp-env:be": "cd backend && cp .env.example .env",
     "cp-env:fe": "cd frontend && cp .env.example .env",
@@ -15,6 +15,6 @@
     "dev:be": "cd backend && npm run dev",
     "dev": "npm run dev:fe & npm run dev:be"
   },
-  "author": "",
+  "author": "ND",
   "license": "ISC"
 }

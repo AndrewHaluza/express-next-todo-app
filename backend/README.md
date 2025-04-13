@@ -12,13 +12,13 @@ This is the backend service for the Express Next Todo App. It is built using Nod
 ## Getting Started
 
 
-1. Install dependencies:
+1. Set up environment variables:
+    - Create a `.env` file in the root directory and configure it as needed.
+
+2. Install dependencies:
     ```bash
     npm install
     ```
-
-2. Set up environment variables:
-    - Create a `.env` file in the root directory and configure it as needed.
 
 3. Start the development server:
     ```bash
@@ -61,13 +61,6 @@ The following scripts are available in the `package.json`:
   ```bash
   npm run test
   ```
-
-## Pre-commit Hooks
-
-The following hooks are executed before committing changes:
-- `ts.check`
-- `build`
-- `add-build`
 
 ## Database Initialization
 
