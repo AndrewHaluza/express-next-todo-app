@@ -3,10 +3,8 @@
     "lib": ["es2022"],
     // Treat files as modules even if it doesn't use import/export
     "moduleDetection": "force",
-
-    // Ignore module structure
-    "module": "Preserve",
-
+    "module": "commonjs",
+    "target": "es6",
     // Allow JSON modules to be imported
     "resolveJsonModule": true,
 
