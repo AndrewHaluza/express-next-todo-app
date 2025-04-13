@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { ReactElement } from "react";
 
-import { TaskDetail } from "../../src/components/TaskDetail";
+import { TaskDetail } from "../../src/components/task/TaskDetail";
 import DefaultLayout from "../../src/layouts/layout";
 import { TaskProvider } from "../../src/contexts/TaskContext";
-import { EditTaskModal } from "../../src/components/EditTaskModal";
+import { EditTaskModal } from "../../src/components/task/EditTaskModal";
 
 function TaskDetailPage() {
   const {

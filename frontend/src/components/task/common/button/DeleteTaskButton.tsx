@@ -1,5 +1,5 @@
-import { useDeleteTask } from "../../hooks/task";
-import { Page } from "../../type";
+import { useDeleteTask } from "../../../../hooks/task";
+import { Page } from "../../../../type";
 
 export function DeleteTaskButton({
   id,

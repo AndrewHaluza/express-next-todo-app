@@ -1,18 +1,22 @@
 import Link from "next/link";
-import { useTask } from "../hooks/task";
+
+import { useTask } from "../../hooks/task";
+import { Loader } from "../common/Loader";
+import { TaskNotFound } from "./common/TaskNotFound";
+import { DeleteTaskButton } from "./common/button/DeleteTaskButton";
+import { EditTaskButton } from "./common/button/EditTaskButton";
 import { StatusTag } from "./common/StatusTag";
-import { TaskDates } from "./TaskDates";
-import { EditTaskButton } from "./common/EditTaskButton";
-import { DeleteTaskButton } from "./common/DeleteTaskButton";
+import { TaskDates } from "./common/TaskDates";
+
 
 export function TaskDetail({ id }: { id: string }) {
   const { data, isLoading, error } = useTask(id);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
 
   if (error instanceof Error) return <p>Error: {error.message}</p>;
 
-  if (!data) return <p>No task found</p>;
+  if (!data) return <TaskNotFound />;
 
   return (
     <div className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-[500px] max-w-[500px]">

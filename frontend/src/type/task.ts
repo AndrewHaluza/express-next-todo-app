@@ -40,7 +40,7 @@ export type updateTaskPayload = Pick<
 >;
 
 export type useCreateTaskMutationResponse = {
-  previousTasks: getTasksResponse;
+  previousTasks?: getTasksResponse;
 };
 
 export type NewTask = Pick<Task, "title" | "description">;

@@ -22,7 +22,6 @@ import {
   useCreateTaskMutationResponse,
   UseUpdateTaskMutationResponse,
 } from "../type/task";
-import { PAGINATION } from "../constants/pagination";
 import { Page } from "../type";
 import { useRouter } from "next/router";
 
@@ -39,61 +38,71 @@ export const useCreateTask = () => {
     mutationFn: createTask,
     onMutate: async (
       newTask: NewTask
-    ): Promise<useCreateTaskMutationResponse> => {
+    ): Promise<useCreateTaskMutationResponse | undefined> => {
       await queryClient.cancelQueries({
         queryKey: TaskKeys.list(page, limit),
       });
 
-      const previousTasks = queryClient.getQueryData<getTasksResponse>(
+      const currentTasks = queryClient.getQueryData<getTasksResponse>(
         TaskKeys.list(page, limit)
-      ) ?? {
-        data: [],
-        meta: {
-          pagination: { page, limit, totalPages: 0, totalItems: 0 },
-        },
-      };
-
-      queryClient.setQueryData<getTasksResponse>(
-        TaskKeys.list(page, limit),
-        (old: getTasksResponse | undefined): getTasksResponse => {
-          return {
-            data: [
-              ...(old?.data || []),
-              {
-                ...newTask,
-                id: Date.now(),
-                createdAt: new Date().toDateString(),
-                updatedAt: new Date().toDateString(),
-                status: "todo",
-              },
-            ],
-            meta: old?.meta || {
-              pagination: {
-                page,
-                limit,
-                totalPages: 1,
-                totalItems: 1,
-              },
-            },
-          };
-        }
       );
 
-      return { previousTasks };
+      const optimisticLength = currentTasks?.data.length ?? 0 + 1;
+
+      // optimistic update only for last page or page is not fulfilled by limit
+      if (
+        currentTasks &&
+        page === currentTasks.meta.pagination.totalPages &&
+        optimisticLength < limit
+      ) {
+        const previousTasks = queryClient.getQueryData<getTasksResponse>(
+          TaskKeys.list(page, limit)
+        ) ?? {
+          data: [],
+          meta: {
+            pagination: { page, limit, totalPages: 0, totalItems: 0 },
+          },
+        };
+
+        queryClient.setQueryData<getTasksResponse>(
+          TaskKeys.list(page, limit),
+          (old: getTasksResponse | undefined): getTasksResponse => {
+            return {
+              data: [
+                ...(old?.data || []),
+                {
+                  ...newTask,
+                  id: Date.now(),
+                  createdAt: new Date().toDateString(),
+                  updatedAt: new Date().toDateString(),
+                  status: "todo",
+                },
+              ],
+              meta: old?.meta || {
+                pagination: {
+                  page,
+                  limit,
+                  totalPages: 1,
+                  totalItems: 1,
+                },
+              },
+            };
+          }
+        );
+
+        return { previousTasks };
+      }
     },
     onError: (
       error: unknown,
-      _: unknown, // Placeholder for unused parameter
+      _: unknown,
       context: useCreateTaskMutationResponse | undefined
     ) => {
       console.error("Error creating task:", error);
 
       if (context?.previousTasks) {
-        const currentPage = PAGINATION.DEFAULT_PAGE; // Replace with dynamic value if available
-        const currentLimit = PAGINATION.DEFAULT_PAGE_SIZE; // Replace with dynamic value if available
-
-        queryClient.setQueryData(
-          TaskKeys.list(currentPage, currentLimit),
+        queryClient.setQueryData<getTasksResponse>(
+          TaskKeys.list(page, limit),
           context.previousTasks
         );
       }
@@ -123,7 +132,7 @@ export const useTasks = (): UseQueryResult<getTasksResponse> => {
 
 export const useDeleteTask = <T extends { id: number; page: Page }>() => {
   const queryClient = useQueryClient();
-  const { page, limit } = useTaskContext();
+  const { page, limit, setPage } = useTaskContext();
 
   return useMutation({
     mutationFn: (props: T) => deleteTask(props.id),
@@ -134,6 +143,37 @@ export const useDeleteTask = <T extends { id: number; page: Page }>() => {
 
       const previousTasks =
         queryClient.getQueryData<Task[]>(TaskKeys.list(page, limit)) || [];
+
+      const currentTasks = queryClient.getQueryData<getTasksResponse>(
+        TaskKeys.list(page, limit)
+      );
+
+      // switch to previous page if the current page has only one task
+      if (currentTasks && currentTasks.data.length === 1 && page > 1) {
+        setPage(page - 1);
+
+        queryClient.setQueryData<getTasksResponse>(
+          TaskKeys.list(page - 1, limit),
+          (old: getTasksResponse | undefined) => {
+            return old
+              ? {
+                  ...old,
+                  data: [...old.data],
+                }
+              : {
+                  data: [],
+                  meta: {
+                    pagination: {
+                      page: page - 1,
+                      limit,
+                      totalPages: 0,
+                      totalItems: 0,
+                    },
+                  },
+                };
+          }
+        );
+      }
 
       queryClient.setQueryData<getTasksResponse>(
         TaskKeys.list(page, limit),
@@ -147,6 +187,7 @@ export const useDeleteTask = <T extends { id: number; page: Page }>() => {
         }
       );
 
+      // redirect to the task list page if the task is deleted from the task detail page
       if (props.page === "task-detail") {
         window.location.href = "/";
       }

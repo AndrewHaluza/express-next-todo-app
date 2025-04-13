@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { useTaskContext, useUpdateTask } from "../hooks/task";
-import { TaskStatus } from "../type/task";
+import { useTaskContext, useUpdateTask } from "../../hooks/task";
+import { TaskStatus } from "../../type/task";
 
 export function EditTaskModal() {
   const { updateTask, closeModal } = useTaskContext();
