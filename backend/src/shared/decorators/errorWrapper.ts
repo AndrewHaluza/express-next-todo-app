@@ -13,14 +13,10 @@ export function errorWrapperDecorator(
     next: NextFunction
   ) {
     try {
-      console.debug(1111111111111);
       const result = await originalMethod.call(this, req, res, next);
-      console.debug({ result });
 
       return result;
     } catch (error) {
-      console.debug(2222222);
-
       next(error);
     }
   };
