@@ -1,5 +1,7 @@
-import "dotenv/config"; // Load environment variables from .env
-export default {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config"); // Load environment variables from .env
+exports.default = {
     development: {
         host: process.env.APP_DB_HOST || "localhost",
         port: Number(process.env.APP_DB_PORT) || 5432,

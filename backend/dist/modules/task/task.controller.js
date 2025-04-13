@@ -1,9 +1,43 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
@@ -16,143 +50,76 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TaskController = void 0;
+const validate_1 = require("../../shared/decorators/validate");
+const global = __importStar(require("../../shared/types/global"));
+const task_schema_1 = require("./task.schema");
+const task_service_1 = require("./task.service");
+const taskService = new task_service_1.TaskService();
+class TaskController {
+    static getTaskList(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const page = Number(req.query.page);
+            const limit = Number(req.query.limit);
+            const tasks = yield taskService.getAllTasks(page, limit);
+            res.send(tasks);
+        });
     }
-};
-import { Validate } from "../../shared/decorators/validate";
-import * as global from "../../shared/types/global";
-import { createTaskSchema, idParamsSchema, paginationQueryParamsSchema, updateTaskSchema, } from "./task.schema";
-import { TaskService } from "./task.service";
-var taskService = new TaskService();
-var TaskController = /** @class */ (function () {
-    function TaskController() {
+    static getTaskById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = yield taskService.getTaskById(req.params.id);
+            res.send({ data });
+        });
     }
-    TaskController.getTaskList = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var page, limit, tasks;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        page = Number(req.query.page);
-                        limit = Number(req.query.limit);
-                        return [4 /*yield*/, taskService.getAllTasks(page, limit)];
-                    case 1:
-                        tasks = _a.sent();
-                        res.send(tasks);
-                        return [2 /*return*/];
-                }
-            });
+    static updateTask(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield taskService.updateTask(req.params.id, req.body);
+            res.send({ message: "Task updated successfully" });
         });
-    };
-    TaskController.getTaskById = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, taskService.getTaskById(req.params.id)];
-                    case 1:
-                        data = _a.sent();
-                        res.send({ data: data });
-                        return [2 /*return*/];
-                }
-            });
+    }
+    static createTask(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = yield taskService.createTask(req.body);
+            res.send({ data });
         });
-    };
-    TaskController.updateTask = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, taskService.updateTask(req.params.id, req.body)];
-                    case 1:
-                        _a.sent();
-                        res.send({ message: "Task updated successfully" });
-                        return [2 /*return*/];
-                }
-            });
+    }
+    static deleteTask(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield taskService.deleteTask(req.params.id);
+            res.json({ message: "Task deleted" });
         });
-    };
-    TaskController.createTask = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, taskService.createTask(req.body)];
-                    case 1:
-                        data = _a.sent();
-                        res.send({ data: data });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    TaskController.deleteTask = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, taskService.deleteTask(req.params.id)];
-                    case 1:
-                        _a.sent();
-                        res.json({ message: "Task deleted" });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    __decorate([
-        Validate(paginationQueryParamsSchema, "query"),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object, Object]),
-        __metadata("design:returntype", Promise)
-    ], TaskController, "getTaskList", null);
-    __decorate([
-        Validate(idParamsSchema, "params"),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object, Object]),
-        __metadata("design:returntype", Promise)
-    ], TaskController, "getTaskById", null);
-    __decorate([
-        Validate(idParamsSchema, "params"),
-        Validate(updateTaskSchema),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object, Object]),
-        __metadata("design:returntype", Promise)
-    ], TaskController, "updateTask", null);
-    __decorate([
-        Validate(createTaskSchema),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object, Object]),
-        __metadata("design:returntype", Promise)
-    ], TaskController, "createTask", null);
-    __decorate([
-        Validate(idParamsSchema, "params"),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Object, Object]),
-        __metadata("design:returntype", Promise)
-    ], TaskController, "deleteTask", null);
-    return TaskController;
-}());
-export { TaskController };
+    }
+}
+exports.TaskController = TaskController;
+__decorate([
+    (0, validate_1.Validate)(task_schema_1.paginationQueryParamsSchema, "query"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], TaskController, "getTaskList", null);
+__decorate([
+    (0, validate_1.Validate)(task_schema_1.idParamsSchema, "params"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], TaskController, "getTaskById", null);
+__decorate([
+    (0, validate_1.Validate)(task_schema_1.idParamsSchema, "params"),
+    (0, validate_1.Validate)(task_schema_1.updateTaskSchema),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], TaskController, "updateTask", null);
+__decorate([
+    (0, validate_1.Validate)(task_schema_1.createTaskSchema),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], TaskController, "createTask", null);
+__decorate([
+    (0, validate_1.Validate)(task_schema_1.idParamsSchema, "params"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], TaskController, "deleteTask", null);

@@ -1,24 +1,31 @@
-import cors from "cors";
-import express from "express";
-import { router } from "./router";
-import logger from "./shared/utils/logger";
-var port = process.env.APP_PORT || "9090";
-var app = express();
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getApp = void 0;
+const cors_1 = __importDefault(require("cors"));
+const express_1 = __importDefault(require("express"));
+const router_1 = require("./router");
+const logger_1 = __importDefault(require("./shared/utils/logger"));
+const port = process.env.APP_PORT || "9090";
+const app = (0, express_1.default)();
 app.disable("x-powered-by");
-app.use(cors({ origin: "*" }));
-app.use(function (req, res, next) {
+app.use((0, cors_1.default)({ origin: "*" }));
+app.use((req, res, next) => {
     res.setHeader("Content-Security-Policy", "default-src 'self'");
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("X-Frame-Options", "DENY");
     res.setHeader("X-XSS-Protection", "1; mode=block");
     next();
 });
-app.use(express.json());
-app.use(express.urlencoded({
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({
     extended: true,
 }));
-app.use(router);
-app.listen(port, function () {
-    logger.info("The server is running at http://localhost:".concat(port));
+app.use(router_1.router);
+app.listen(port, () => {
+    logger_1.default.info(`The server is running at http://localhost:${port}`);
 });
-export var getApp = function () { return app; };
+const getApp = () => app;
+exports.getApp = getApp;
