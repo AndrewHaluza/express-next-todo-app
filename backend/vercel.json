@@ -14,11 +14,5 @@
         "src": "/(.*)",
         "dest": "/api/$1"
       }
-    ],
-    "functions": {
-      "api/[[...all]]": {
-        "handler": "dist/index.js",
-        "runtime": "nodejs18.x"
-      }
-    }
+    ]
   }
