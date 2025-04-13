@@ -20,5 +20,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "isolatedModules": true,
+    "outDir": "dist"
   }
 }
