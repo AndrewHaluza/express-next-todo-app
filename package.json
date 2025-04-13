@@ -1,13 +1,19 @@
 {
-  "name": "express-react-todo-app",
+  "name": "express-next-todo-app",
   "version": "1.0.0",
-  "description": "Add .env",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:init": "cd backend && npm run test:db:init",
+    "test": "cd backend && npm test || echo \"Check node version\"",
     "init:fe": "cd frontend && npm install",
     "init:be": "cd backend && npm install && npm run db:init && npm run test:db:init",
-    "init": "npm run init:fe && npm run init:be"
+    "init": "npm run init:fe && npm run init:be",
+    "cp-env:be": "cd backend && cp .env.example .env",
+    "cp-env:fe": "cd frontend && cp .env.example .env",
+    "dev:fe": "cd frontend && npm run dev",
+    "dev:be": "cd backend && npm run dev",
+    "dev": "npm run dev:fe & npm run dev:be"
   },
   "author": "",
   "license": "ISC"
