@@ -33,7 +33,6 @@
     "add-build"
   ],
   "scripts": {
-    "postinstall": "db:init && test:db:init",
     "db:init": "npx sequelize-cli db:create --config ./src/configs/sequelizeConfig.js || echo 'Database initialization failed, but continuing...'",
     "dev": "tsx watch --env-file=.env src/index.ts",
     "ts.check": "tsc --project tsconfig.json",
